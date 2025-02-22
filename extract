@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from bs4 import BeautifulSoup
+import requests
 import argparse
 
 def main():
@@ -9,14 +11,27 @@ def main():
         )
 
     parser.add_argument('url', help='URL de la page HTML')
-    parser.add_argument('-r', '--regex', help='Regex pour filtrer les URLs')
-    parser.add_argument('-i', '--images', help='Extrait les images', action='store_true')
-    parser.add_argument('-v', '--videos', help='Extrait les vidéos', action='store_true')
-    parser.add_argument('-p', '--path', help='Chemin de destination')
+    parser.add_argument('-r', '--regex', help='Liste seulement les ressources dont le nom match l\'expression régulière')
+    parser.add_argument('-i', '--images', help='Ne liste pas les éléments <img> (default: liste)', action='store_false')
+    parser.add_argument('-v', '--videos', help='Ne liste pas les éléments <video> (default: liste)', action='store_false')
+    parser.add_argument('-p', '--path', help='Liste et copie les ressources img et/ou video de <url> dans le path (default: juste liste)')
 
     args = parser.parse_args()
 
-    print(args)
+    page = requests.get(args.url)
+
+    soup = BeautifulSoup(page.content, "html.parser")
+
+    print('PATH ', args.url)
+    for tag in soup.find_all(["img", "video"]):
+        if tag.name == 'img' and args.images:
+            print('IMAGE', tag.get('src'))
+        elif tag.name == 'video' and args.videos:
+            if tag.get('src'):
+                print('VIDEO', tag.get('src'))
+            else:
+                print('VIDEO', tag.source.get('src'))
+    
 
 if __name__ == '__main__':
     main()
