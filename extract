@@ -1,7 +1,8 @@
-#!/u/dontignx/IFT3225-TP1/venv/bin/python3
+#!/u/dontignx/www/ens/hiver/dontignx/public_html/IFT3225-TP1/python3
 from bs4 import BeautifulSoup
 import requests
 import argparse
+import os
 
 def main():
     # Intitialize argument parser
@@ -26,10 +27,11 @@ def main():
     soup = BeautifulSoup(page.content, "html.parser")
 
     # Print path
+    base_url = args.url.rsplit('/', 1)[0]
     if args.path:
         print('PATH', args.path)
     else:
-        print('PATH', args.url)
+        print('PATH', base_url)
 
     # Extract images and videos
     for tag in soup.find_all(["img", "video"]):
@@ -54,13 +56,39 @@ def main():
         regex = args.regex if args.regex else ''
         
         if regex in src: # Check if the resource name matches the regex
-            if type == 'IMAGE':
-                if alt:
-                    print('IMAGE', src, alt)
-                else:
-                    print('IMAGE', src)
-            elif type == 'VIDEO':
-                print('VIDEO', src)
+            # -p
+            if args.path:
+                
+                # Get file name from url
+                filename = src.split("/")[-1]
+                
+                # Download file to specified path
+                if not os.path.exists(args.path):
+                    os.makedirs(args.path)
+                full_path = os.path.join(args.path, filename)
+                response = requests.get(base_url + src)
+                with open(full_path, 'wb') as f:
+                    f.write(response.content)
+
+                # Output file information
+                if type == 'IMAGE':
+                    if alt:
+                        print('IMAGE', filename, alt)
+                    else:
+                        print('IMAGE', filename)
+                elif type == 'VIDEO':
+                    print('VIDEO', filename)
+            
+            # No -p
+            else:
+                # Output file information
+                if type == 'IMAGE':
+                    if alt:
+                        print('IMAGE', src, alt)
+                    else:
+                        print('IMAGE', src)
+                elif type == 'VIDEO':
+                    print('VIDEO', src)
 
 if __name__ == '__main__':
     main()

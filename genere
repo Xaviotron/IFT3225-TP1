@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/u/dontignx/www/ens/hiver/dontignx/public_html/IFT3225-TP1/python3
 import sys
 
 def main():
@@ -38,7 +38,7 @@ def main():
     print("            <th>alt</th>")
     print("        </tr>")
     for url, alt in resources:
-        new_url = base_path.rsplit('/', 1)[0] + '/' + url
+        new_url = base_path + '/' + url
         print("        <tr>")
         print(f"            <td>{new_url}</td>")
         print(f"            <td>{alt}</td>")
