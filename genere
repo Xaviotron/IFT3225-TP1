@@ -1,4 +1,4 @@
-#!/u/dontignx/www/ens/hiver/dontignx/public_html/IFT3225-TP1/python3
+#!/u/dontignx/www/ens/hiver/dontignx/public_html/IFT3225-TP1/venv/bin/python3
 import sys
 
 def main():
