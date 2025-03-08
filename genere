@@ -53,7 +53,6 @@ def main():
     print("<script src=\"script.js\"></script>")
     print("</html>")
 
-
 if __name__ == '__main__':
     try:
         main()
