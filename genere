@@ -1,4 +1,4 @@
-#!/u/dontignx/www/ens/hiver/dontignx/public_html/IFT3225-TP1/venv/bin/python3
+#!/www/ens/hiver/dontignx/public_html/IFT3225-TP1/venv/bin/python3
 import sys
 
 def main():
@@ -16,9 +16,9 @@ def main():
                 alt = parts[2]
             else:
                 alt = ''
-            resources.append((url, alt))
+            resources.append((url, alt, 'IMAGE'))
         elif line.startswith('VIDEO'):
-            resources.append((line.split(' ')[1], ''))
+            resources.append((line.split(' ')[1], '', 'VIDEO'))
 
     print("<!DOCTYPE html>")
     print("<html lang=\"en\">")
@@ -27,28 +27,37 @@ def main():
     print("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">")
     print("    <title>Document</title>")
     print("    <link rel=\"stylesheet\" href=\"style.css\">")
+    print("    <link href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\" rel=\"stylesheet\">")
     print("</head>")
     print("<body>")
-    print("    <h1>Visualisateur</h1>")
-    print("    <p>d'images/vidéo</p>")
     print("")
-    print("    <table id=\"table\">")
-    print("        <tr>")
-    print("            <th>ressource</th>")
-    print("            <th>alt</th>")
-    print("        </tr>")
-    for url, alt in resources:
+    print("    <div class=\"container\" id=\"container\">")
+    print("        <div class=\"container text-center\">")
+    print("            <h1>Visualisateur</h1>")
+    print("            <p>d'images/vidéo</p>")
+    print("        </div>")
+    print("")
+    print("        <table id=\"table\" class=\"table\">")
+    print("            <tr class=\"table-light\">")
+    print("                <th>ressource</th>")
+    print("                <th>alt</th>")
+    print("            </tr>")
+    for url, alt, res_type in resources:
         new_url = base_path + '/' + url
-        print("        <tr>")
+        class_name = "image" if res_type == "IMAGE" else "video"
+        print(f"        <tr class=\"{class_name}\">")
         print(f"            <td>{new_url}</td>")
         print(f"            <td>{alt}</td>")
         print("        </tr>")
     print("    </table>")
     print("")
-    print("    <button id=\"carrousel\">Carrousel</button>")
-    print("    <button id=\"gallerie\">Gallerie</button>")
+    print("    <div class=\"container text-center\" id=\"image-container\"></div>")
     print("")
-    print("    <div id=\"container\"></div>")
+    print("    <div class=\"hstack text-center\" id=\"buttons\">")
+    print("        <button id=\"carrousel\" class=\"btn btn-primary\">Carrousel</button>")
+    print("        <button id=\"gallerie\" class=\"btn btn-primary\">Gallerie</button>")
+    print("    </div>")
+    print("")
     print("</body>")
     print("<script src=\"script.js\"></script>")
     print("</html>")
