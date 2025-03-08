@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/u/dontignx/IFT3225-TP1/venv/bin/python3
 from bs4 import BeautifulSoup
 import requests
 import argparse
@@ -27,9 +27,9 @@ def main():
 
     # Print path
     if args.path:
-        print('PATH ', args.path)
+        print('PATH', args.path)
     else:
-        print('PATH ', args.url)
+        print('PATH', args.url)
 
     # Extract images and videos
     for tag in soup.find_all(["img", "video"]):
@@ -56,11 +56,11 @@ def main():
         if regex in src: # Check if the resource name matches the regex
             if type == 'IMAGE':
                 if alt:
-                    print('IMAGE ', src, alt)
+                    print('IMAGE', src, alt)
                 else:
-                    print('IMAGE ', src)
+                    print('IMAGE', src)
             elif type == 'VIDEO':
-                print('VIDEO ', src)
+                print('VIDEO', src)
 
 if __name__ == '__main__':
     main()
